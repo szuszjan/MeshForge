@@ -15,12 +15,12 @@ Public Module AppSettings
     Private Const PaletteDictIndex = 0
     Private Const LangDictIndex = 1
 
-    Public Property IsDarkMode As Boolean = False
+    Public Property IsDarkMode As Boolean = True
 
     ''' <summary>Wczytuje zapamiętane preferencje (jeśli są) i stosuje obie naraz. Wywołaj raz, na starcie aplikacji.</summary>
     Public Sub LoadAndApply()
-        Dim dark = False
-        Dim lang = AppLanguage.Polish
+        Dim dark = True
+        Dim lang = AppLanguage.English
         Try
             If File.Exists(SettingsPath) Then
                 For Each rawLine In File.ReadLines(SettingsPath)
@@ -28,14 +28,14 @@ Public Module AppSettings
                     If parts.Length <> 2 Then Continue For
                     Select Case parts(0).Trim().ToLowerInvariant()
                         Case "theme"
-                            dark = parts(1).Trim().Equals("dark", StringComparison.OrdinalIgnoreCase)
+                            dark = Not parts(1).Trim().Equals("light", StringComparison.OrdinalIgnoreCase)
                         Case "language"
-                            If parts(1).Trim().Equals("en", StringComparison.OrdinalIgnoreCase) Then lang = AppLanguage.English
+                            If parts(1).Trim().Equals("pl", StringComparison.OrdinalIgnoreCase) Then lang = AppLanguage.Polish
                     End Select
                 Next
             End If
         Catch
-            ' brak/nieczytelny plik ustawień - zostań przy domyślnych (jasny, polski)
+            ' brak/nieczytelny plik ustawień - zostań przy domyślnych (ciemny, angielski)
         End Try
         ApplyTheme(dark)
         ApplyLanguage(lang)

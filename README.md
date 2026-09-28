@@ -1,147 +1,147 @@
 # MeshForge
 
-Program (VB.NET, WPF, .NET 9) do obróbki skanów 3D: import/eksport typowych formatów, wypełnianie
-otworów, teselacja (zagęszczanie i upraszczanie siatki), nakładanie kolorowej tekstury ze zdjęcia
-oraz zestaw innych przydatnych funkcji porządkujących siatkę.
+A desktop app (VB.NET, WPF, .NET 9) for processing 3D scans: import/export of common formats,
+hole filling, tessellation (mesh subdivision and simplification), photo-based color texturing,
+and a set of other useful mesh cleanup functions.
 
-Rzeczywiście działający, przetestowany kod — nie prototyp/atrapa. Rdzeń algorytmiczny (16 testów
-jednostkowych) jest oddzielony od interfejsu, więc łatwo go rozwijać albo użyć w innym projekcie.
+Real, working, tested code — not a prototype. The algorithmic core (22 unit tests) is kept
+separate from the UI, so it's easy to extend or reuse in another project.
 
-## Wymagania
+## Requirements
 
-- Windows (WPF jest technologią tylko-Windows)
-- [.NET 9 SDK](https://dotnet.microsoft.com/download) — do budowania i uruchamiania
+- Windows (WPF is a Windows-only technology)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download) — to build and run
 
-Visual Studio **nie jest wymagany** — całość buduje się i uruchamia z linii poleceń — ale możesz
-też otworzyć `MeshForge.sln` w Visual Studio 2022+, jeśli wolisz.
+Visual Studio is **not required** — everything builds and runs from the command line — but you
+can also open `MeshForge.sln` in Visual Studio 2022+ if you prefer.
 
-## Uruchomienie
+## Running
 
 ```bash
 dotnet run --project src/MeshForge.App
 ```
 
-Budowanie całej solucji i uruchomienie testów rdzenia:
+Build the whole solution and run the core tests:
 
 ```bash
 dotnet build MeshForge.sln
 dotnet test src/MeshForge.Tests
 ```
 
-Na start otwórz jeden z plików w folderze [przyklady/](przyklady/) (Plik → Otwórz skan...).
+To get started, open one of the files in the [przyklady/](przyklady/) (examples) folder
+(File → Open scan...).
 
-## Instalator
+## Installer
 
-Gotowy `Setup.exe` (Windows Installer w stylu Inno Setup — skrót w Menu Start, opcjonalny na pulpicie,
-odinstalowywanie z listy aplikacji) buduje się jednym poleceniem:
+A ready-to-run `Setup.exe` (Inno Setup-style Windows installer — Start Menu shortcut, optional
+desktop shortcut, uninstall from the apps list) builds with a single command:
 
 ```powershell
 installer\build.ps1
 ```
 
-Wynik: `installer_output\MeshForge-Setup-<wersja>.exe`. Wymaga [Inno Setup 6](https://jrsoftware.org/isdl.php)
-(`winget install JRSoftware.InnoSetup`) — skrypt sam publikuje aplikację jako samodzielny plik .exe
-(nie wymaga zainstalowanego .NET na komputerze docelowym) i pakuje ją w instalator.
+Output: `installer_output\MeshForge-Setup-<version>.exe`. Requires [Inno Setup 6](https://jrsoftware.org/isdl.php)
+(`winget install JRSoftware.InnoSetup`) — the script publishes the app as a self-contained single
+file (no .NET installation required on the target machine) and packages it into an installer.
 
-## Struktura projektu
+## Project structure
 
 ```
 MeshForge.sln
 src/
-  MeshForge.Core/     biblioteka klas - cały model siatki i algorytmy, ZERO zależności od WPF/UI
-    Geometry/            Mesh, Triangle, topologia siatki (krawędzie/otwory), spawanie wierzchołków
-    IO/                   import/eksport OBJ, STL (ASCII+binarny), PLY (ASCII), XYZ (chmura punktów)
-    Algorithms/           HoleFiller, Tessellator (subdivide+decymacja QEM), PointCloudTriangulator,
-                          Smoother, Texturizer, MeshCleaner, MeshTransformer, NormalCalculator
-  MeshForge.App/       aplikacja WPF (VB.NET) - okno, podgląd 3D (HelixToolkit), obsługa zdarzeń
-  MeshForge.Tests/     16 testów xUnit na algorytmach Core (w tym testy na plikach z przyklady/)
-przyklady/                gotowe pliki do wypróbowania funkcji
+  MeshForge.Core/     class library - the whole mesh model and algorithms, ZERO dependency on WPF/UI
+    Geometry/            Mesh, Triangle, mesh topology (edges/holes), vertex welding
+    IO/                   OBJ, STL (ASCII+binary), PLY (ASCII), XYZ (point cloud) import/export
+    Algorithms/           HoleFiller, Tessellator (subdivide+QEM decimation), PointCloudTriangulator,
+                          Smoother, Texturizer, MeshCleaner, MeshTransformer, NormalCalculator,
+                          ConvexHull3D, AutoOrient
+  MeshForge.App/       WPF (VB.NET) application - window, 3D viewport (HelixToolkit), event handling
+  MeshForge.Tests/     xUnit tests for the Core algorithms (including tests against files from przyklady/)
+przyklady/                sample files ready to try the features on
 ```
 
-Rdzeń (`MeshForge.Core`) jest celowo niezależny od WPF — cała logika geometrii działa też
-w konsoli/testach, bez otwierania okna.
+The core (`MeshForge.Core`) is deliberately independent of WPF — all the geometry logic also
+works from a console/tests, with no window involved.
 
-## Funkcje
+## Features
 
-### Import / eksport
-- **Import:** OBJ (z materiałem/teksturą przez MTL), STL (ASCII i binarny, auto-wykrywanie), PLY
-  (tylko wariant ASCII — patrz "Ograniczenia"), XYZ/TXT (surowa chmura punktów: `x y z` lub
-  `x y z r g b`, spacja/tabulator/przecinek jako separator)
-- **Eksport:** OBJ (z MTL + kopią tekstury, jeśli jest), STL (binarny), PLY (ASCII, z kolorem
-  wierzchołków), XYZ
+### Import / export
+- **Import:** OBJ (with material/texture via MTL), STL (ASCII and binary, auto-detected), PLY
+  (ASCII variant only — see "Limitations"), XYZ/TXT (raw point cloud: `x y z` or `x y z r g b`,
+  space/tab/comma as separator)
+- **Export:** OBJ (with MTL + a copy of the texture, if present), STL (binary), PLY (ASCII, with
+  vertex color), XYZ
 
-### Naprawa siatki
-- **Wypełnij otwory** — wykrywa kontury brzegowe (krawędzie należące do jednego trójkąta) i
-  łata je metodą "ear clipping" w płaszczyźnie dopasowanej metodą Newella. Bardzo duże kontury
-  (domyślnie >2000 wierzchołków) są pomijane — to zwykle zewnętrzny brzeg niedomkniętego skanu,
-  a nie dziura do załatania.
-- **Wyczyść siatkę** — spawa wierzchołki leżące bliżej siebie niż epsilon (typowe po eksporcie
-  STL, który nie indeksuje wierzchołków), usuwa zdegenerowane/zdublowane trójkąty i martwe
-  wierzchołki.
-- **Przelicz normalne** — normalne per-wierzchołek ważone polem powierzchni sąsiednich trójkątów.
-- **Wygładź (Laplace)** — redukuje szum skanera; wierzchołki na brzegu otworów są celowo pomijane,
-  żeby wygładzanie nie "kurczyło" brzegu do środka.
+### Mesh repair
+- **Fill holes** — detects boundary loops (edges belonging to a single triangle) and patches them
+  with ear clipping in a plane fitted using Newell's method. Very large loops (>2000 vertices by
+  default) are skipped — that's usually the outer boundary of an unclosed scan, not a hole to patch.
+- **Clean mesh** — welds vertices closer together than an epsilon (typical after STL export, which
+  doesn't index vertices), removes degenerate/duplicate triangles and orphaned vertices.
+- **Recalculate normals** — per-vertex normals weighted by the area of neighboring triangles.
+- **Smooth (Laplacian)** — reduces scanner noise; vertices on hole boundaries are deliberately
+  skipped so smoothing doesn't "shrink" the boundary inward.
 
-### Teselacja
-- **Zagęść (subdivision)** — dzieli każdy trójkąt na 4 w środkach krawędzi (współdzielone
-  punkty środkowe, więc siatka zostaje spójna, bez pęknięć).
-- **Uprość (decymacja)** — klasyczny algorytm błędu kwadratowego Garland-Heckbert (QEM):
-  ściąga najtańsze krawędzie do optymalnego punktu (rozwiązanie układu 3×3), aż do zadanego
-  procentu obecnej liczby trójkątów.
-- **Teseluj chmurę punktów** — dla surowej chmury punktów (bez trójkątów): dopasowanie
-  płaszczyzny metodą PCA + triangulacja Delaunaya 2D (Bowyer-Watson). Działa bardzo dobrze dla
-  pojedynczego ujęcia skanera (powierzchnia widoczna mniej więcej z jednej strony, jak mapa
-  wysokości) — patrz "Ograniczenia" niżej.
+### Tessellation
+- **Densify (subdivision)** — splits each triangle into 4 at the edge midpoints (shared midpoints,
+  so the mesh stays watertight, with no cracks).
+- **Simplify (decimation)** — the classic Garland-Heckbert quadric error metric (QEM) algorithm:
+  collapses the cheapest edges to their optimal point (solving a 3×3 system) down to a target
+  percentage of the current triangle count.
+- **Tessellate point cloud** — for a raw point cloud (no triangles): PCA plane fitting + 2D
+  Delaunay triangulation (Bowyer-Watson). Works very well for a single scanner pass (a surface
+  seen from roughly one side, like a height map) — see "Limitations" below.
 
-### Tekstura kolorowa ze zdjęcia
-Generuje współrzędne UV metodą rzutowania (planarne / cylindryczne / sferyczne — wybierz typ
-dopasowany do kształtu modelu) i podpina wskazane zdjęcie jako teksturę. To mapowanie przez
-rzut z jednego zdjęcia, nie pełna fotogrametria wieloujęciowa.
+### Photo-based color texture
+Generates UV coordinates via projection (planar / cylindrical / spherical — pick the type that
+matches the model's shape) and applies the chosen photo as a texture. This is single-photo
+projection mapping, not full multi-view photogrammetry.
 
-### Transformacje
-Wyśrodkowanie, normalizacja rozmiaru do 1.0, odwrócenie normalnych (naprawia siatkę
-"wywróconą na lewą stronę"), **auto-orientacja do najbardziej płaskiej powierzchni** — wykrywa
-płaskie powierzchnie modelu (grupując trójkąty wg kierunku normalnej, ważąc polem), pokazuje listę
-od największej i pozwala wybrać, która ma się stać poziomą podstawą (model zostaje obrócony i
-"postawiony" na tej powierzchni). Przydatne po skanowaniu, gdy model ma przypadkową orientację.
+### Transformations
+Centering, normalizing size to 1.0, flipping normals (fixes a mesh that's "inside-out"),
+**auto-orient to the flattest surface** — detects the model's flat surfaces using the same
+approach as Orca/PrusaSlicer's "place on face" (builds a convex hull of the mesh, then flood-fills
+coplanar hull facets into candidate surfaces), shows a list from largest to smallest with a live
+3D preview highlighting each candidate directly on the model, and lets you pick which one becomes
+the level base (the model is rotated and "placed" on that surface). Useful after scanning, when the
+model ends up in a random orientation — and, because it works on the convex hull, it can correctly
+find a surface even where the scanner never captured it (e.g. the underside that was resting on
+the scan bed).
 
-### Preferencje
-Menu **Preferencje...** — język interfejsu (polski/angielski, przełączany na żywo, bez restartu)
-i tryb ciemny. Oba wybory są zapamiętywane między uruchomieniami
+### Preferences
+The **Preferences...** menu — interface language (Polish/English, switches live, no restart
+needed) and dark mode. Both choices are remembered between runs
 (`%AppData%\MeshForge\settings.txt`).
 
-### Inne
-Cofnij ostatnią operację (historia 15 kroków), statystyki siatki na żywo (liczba
-wierzchołków/trójkątów, wymiary, pole powierzchni, objętość, czy siatka jest wodoszczelna),
-podgląd wireframe, obrót/przesuwanie/zoom kamery w podglądzie 3D, ekran startowy i własna ikona
-aplikacji.
+### Other
+Undo the last operation (15-step history), live mesh statistics (vertex/triangle count,
+dimensions, surface area, volume, whether the mesh is watertight), wireframe overlay,
+rotate/pan/zoom camera in the 3D preview, a splash screen, and a custom app icon.
 
-## Ograniczenia wersji 1 (świadome uproszczenia, nie "będzie kiedyś")
+## Version 1 limitations (deliberate simplifications, not "coming eventually")
 
-- **Teselacja chmury punktów** to metoda "2,5D" (rzut na jedną najlepiej dopasowaną płaszczyznę).
-  Nie rekonstruuje poprawnie zamkniętej bryły z chmury zeskanowanej z każdej strony (360°) — do
-  tego potrzebny byłby algorytm typu Poisson surface reconstruction / ball-pivoting, znacznie
-  bardziej złożony. W praktyce większość skanerów i tak eksportuje już gotową siatkę (OBJ/STL/PLY),
-  więc to ograniczenie dotyczy tylko surowych chmur punktów ze skanowania 360°.
-- **PLY** — obsługiwany jest tylko wariant ASCII (binarny rzuca czytelny komunikat z podpowiedzią,
-  jak przekonwertować w MeshLab).
-- **Tekstura** to mapowanie przez rzut z jednego zdjęcia, nie automatyczne łączenie wielu zdjęć
-  z różnych kątów (jak RealityCapture/Metashape).
-- **Łączenie wielu skanów** — jest proste doklejenie siatek (`MeshTransformer.Append`), ale bez
-  automatycznego wyrównania (ICP/rejestracja). Jeśli dwa skany nie są już w tym samym układzie
-  współrzędnych, trzeba je wyrównać ręcznie przed połączeniem.
+- **Point cloud tessellation** is a "2.5D" method (projection onto a single best-fit plane). It
+  doesn't correctly reconstruct a closed solid from a point cloud scanned from every side (360°) —
+  that would need something like Poisson surface reconstruction / ball-pivoting, which is
+  considerably more complex. In practice most scanners already export a finished mesh
+  (OBJ/STL/PLY), so this limitation only affects raw 360° point clouds.
+- **PLY** — only the ASCII variant is supported (binary produces a clear error message with a hint
+  on how to convert it in MeshLab).
+- **Texture** is single-photo projection mapping, not automatic multi-photo blending from
+  different angles (like RealityCapture/Metashape).
+- **Merging multiple scans** — simple mesh concatenation is supported (`MeshTransformer.Append`),
+  but without automatic alignment (ICP/registration). If two scans aren't already in the same
+  coordinate system, they need to be aligned manually before merging.
 
-Żadne z powyższych nie jest "udawane" — po prostu jest to zakres rozsądny do realnego zbudowania
-i przetestowania w jednej sesji. Najbardziej naturalne rozszerzenia na później: Poisson
-reconstruction dla pełnych chmur 360°, ICP do automatycznego wyrównywania skanów, import PLY
-binarnego, multi-photo texture baking.
+None of the above is "faked" — it's simply a scope that's reasonable to actually build and test
+in one sitting. The most natural extensions for later: Poisson reconstruction for full 360° point
+clouds, ICP for automatic scan alignment, binary PLY import, multi-photo texture baking.
 
-## Dlaczego takie wybory techniczne
+## Why these technical choices
 
-- **WPF + HelixToolkit.Wpf** zamiast czystego WinForms+OpenGL: viewport 3D z obrotem/zoomem/panem
-  "za darmo", bez pisania własnej kamery, i bez zależności od natywnych bibliotek graficznych.
-- **System.Numerics.Vector3/Vector2** w Core zamiast własnych typów wektorowych — to wbudowana
-  w .NET, szybka biblioteka matematyczna, więc nie trzeba jej pisać od zera.
-- **Model "unified index"** (jeden zestaw normalna/UV/kolor na wierzchołek) zamiast osobnego
-  indeksowania v/vt/vn jak w surowym OBJ — prostszy kod i pasuje bezpośrednio do tego, czego
-  oczekuje `MeshGeometry3D` w WPF.
+- **WPF + HelixToolkit.Wpf** instead of plain WinForms+OpenGL: a 3D viewport with rotate/zoom/pan
+  "for free," without writing a custom camera and without depending on native graphics libraries.
+- **System.Numerics.Vector3/Vector2** in Core instead of custom vector types — this is a built-in,
+  fast .NET math library, so there's no need to write one from scratch.
+- **"Unified index" model** (one normal/UV/color per vertex) instead of separate v/vt/vn indexing
+  like raw OBJ — simpler code, and it matches exactly what WPF's `MeshGeometry3D` expects.
