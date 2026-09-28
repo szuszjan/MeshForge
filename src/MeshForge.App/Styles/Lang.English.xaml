@@ -1,0 +1,108 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!-- English UI strings - keys MUST match Lang.Polish.xaml exactly. -->
+
+    <system:String x:Key="Str_WindowTitle">MeshForge — 3D scan processing</system:String>
+    <system:String x:Key="Str_BrandSubtitle">3D scan processing</system:String>
+
+    <system:String x:Key="Str_MenuFile">_File</system:String>
+    <system:String x:Key="Str_MenuOpen">_Open scan...</system:String>
+    <system:String x:Key="Str_MenuSaveAs">_Save as...</system:String>
+    <system:String x:Key="Str_MenuExit">E_xit</system:String>
+    <system:String x:Key="Str_MenuEdit">_Edit</system:String>
+    <system:String x:Key="Str_MenuUndo">_Undo last operation</system:String>
+    <system:String x:Key="Str_MenuView">_View</system:String>
+    <system:String x:Key="Str_MenuZoomExtents">_Zoom to fit model</system:String>
+    <system:String x:Key="Str_MenuToggleWireframe">Show _wireframe</system:String>
+    <system:String x:Key="Str_MenuPreferences">_Preferences...</system:String>
+    <system:String x:Key="Str_MenuHelp">_Help</system:String>
+    <system:String x:Key="Str_MenuAbout">_About...</system:String>
+
+    <system:String x:Key="Str_StatusReady">Ready. Load a scan to begin (File → Open scan...).</system:String>
+
+    <system:String x:Key="Str_GroupRepair">Mesh repair</system:String>
+    <system:String x:Key="Str_GroupTessellation">Tessellation</system:String>
+    <system:String x:Key="Str_GroupTexture">Color texture from photo</system:String>
+    <system:String x:Key="Str_GroupTransform">Transformations</system:String>
+
+    <system:String x:Key="Str_BtnFillHoles">Fill holes</system:String>
+    <system:String x:Key="Str_BtnCleanMesh">Clean mesh (weld/remove errors)</system:String>
+    <system:String x:Key="Str_BtnRecalcNormals">Recalculate normals</system:String>
+    <system:String x:Key="Str_SectionSmoothing">SMOOTHING (LAPLACE)</system:String>
+    <system:String x:Key="Str_LabelIterations">Iterations:</system:String>
+    <system:String x:Key="Str_LabelStrength">Strength (0–1):</system:String>
+    <system:String x:Key="Str_BtnSmooth">Smooth</system:String>
+
+    <system:String x:Key="Str_SectionSubdivision">SUBDIVISION</system:String>
+    <system:String x:Key="Str_LabelSubdivideIterations">Iterations (×4 triangles each):</system:String>
+    <system:String x:Key="Str_BtnSubdivide">Subdivide mesh</system:String>
+    <system:String x:Key="Str_SectionDecimation">SIMPLIFICATION (QEM DECIMATION)</system:String>
+    <system:String x:Key="Str_LabelDecimateTarget">Target: % of current triangles:</system:String>
+    <system:String x:Key="Str_BtnDecimate">Simplify mesh</system:String>
+    <system:String x:Key="Str_SectionPointCloud">POINT CLOUD (NO TRIANGLES)</system:String>
+    <system:String x:Key="Str_BtnTriangulatePointCloud">Tessellate point cloud</system:String>
+
+    <system:String x:Key="Str_BtnLoadTexturePhoto">Choose photo...</system:String>
+    <system:String x:Key="Str_ImageFilter">Images (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp|All files (*.*)|*.*</system:String>
+    <system:String x:Key="Str_NoPhotoSelected">(no photo selected)</system:String>
+    <system:String x:Key="Str_LabelProjectionType">Projection type onto model:</system:String>
+    <system:String x:Key="Str_ProjectionPlanar">Planar (flat object/front)</system:String>
+    <system:String x:Key="Str_ProjectionCylindrical">Cylindrical (mug, figure)</system:String>
+    <system:String x:Key="Str_ProjectionSpherical">Spherical (head, ball)</system:String>
+    <system:String x:Key="Str_BtnApplyTexture">Apply texture</system:String>
+
+    <system:String x:Key="Str_BtnCenter">Center</system:String>
+    <system:String x:Key="Str_BtnNormalizeSize">Normalize size (to 1.0)</system:String>
+    <system:String x:Key="Str_BtnFlipNormals">Flip normals</system:String>
+    <system:String x:Key="Str_BtnAutoOrient">Straighten / pick base...</system:String>
+
+    <system:String x:Key="Str_SectionStats">MESH STATISTICS</system:String>
+    <system:String x:Key="Str_NoModelLoaded">(no model loaded)</system:String>
+    <system:String x:Key="Str_SectionLog">OPERATION LOG</system:String>
+
+    <system:String x:Key="Str_Loading">Loading...</system:String>
+
+    <system:String x:Key="Str_PrefsTitle">Preferences</system:String>
+    <system:String x:Key="Str_PrefsLanguage">Language:</system:String>
+    <system:String x:Key="Str_PrefsDarkMode">Dark mode</system:String>
+    <system:String x:Key="Str_PrefsClose">Close</system:String>
+    <system:String x:Key="Str_LangPolish">Polish</system:String>
+    <system:String x:Key="Str_LangEnglish">English</system:String>
+
+    <system:String x:Key="Str_PickerTitle">Choose base surface</system:String>
+    <system:String x:Key="Str_PickerInstructions">Detected flat surfaces of the model (calculated the same way as in Orca/PrusaSlicer). Click a highlighted surface in the preview or pick it from the list, then apply.</system:String>
+    <system:String x:Key="Str_PickerApply">Apply</system:String>
+    <system:String x:Key="Str_PickerCancel">Cancel</system:String>
+    <system:String x:Key="Str_PickerNoSurfaces">No flat surfaces were found on this model.</system:String>
+
+    <system:String x:Key="Str_MsgLoadFirstTitle">No model loaded</system:String>
+    <system:String x:Key="Str_MsgLoadFirst">First load a scan (File → Open scan...).</system:String>
+    <system:String x:Key="Str_MsgNoPhotoTitle">No photo</system:String>
+    <system:String x:Key="Str_MsgNoPhoto">First choose a photo using the 'Choose photo...' button.</system:String>
+    <system:String x:Key="Str_MsgOpenErrorTitle">Load error</system:String>
+    <system:String x:Key="Str_MsgOpenError">Failed to load the file:</system:String>
+    <system:String x:Key="Str_MsgSaveErrorTitle">Save error</system:String>
+    <system:String x:Key="Str_MsgSaveError">Failed to save the file:</system:String>
+    <system:String x:Key="Str_MsgSubdivideConfirmTitle">Confirmation</system:String>
+    <system:String x:Key="Str_MsgSubdivideConfirm">subdivision iterations will produce about ×{0:N0} more triangles than now. This can be very slow and memory-heavy for large meshes. Continue?</system:String>
+    <system:String x:Key="Str_LogUndoNone">Nothing to undo.</system:String>
+    <system:String x:Key="Str_LogUndoDone">Undid the last operation.</system:String>
+    <system:String x:Key="Str_LogLoaded">Loaded</system:String>
+    <system:String x:Key="Str_LogSaved">Saved as</system:String>
+    <system:String x:Key="Str_LogSavedTo">Saved:</system:String>
+    <system:String x:Key="Str_LogVertices">vertices</system:String>
+    <system:String x:Key="Str_LogTriangles">triangles</system:String>
+    <system:String x:Key="Str_LogTexture">texture</system:String>
+    <system:String x:Key="Str_LogVertexColor">vertex colors</system:String>
+
+    <system:String x:Key="Str_AboutText">MeshForge — a tool for processing 3D scans.
+
+Features: hole filling, tessellation (subdivision and QEM decimation), color texturing from a photo, mesh cleanup, Laplacian smoothing, auto-orient to the flattest surface, basic transformations.
+
+Formats: import OBJ / STL / PLY (ASCII) / XYZ, export OBJ / STL / PLY / XYZ.
+
+Version 1 limitations: point cloud (triangle-free) tessellation uses a 2.5D projection method — it works well for a single scan pass, not a full 360° reconstruction. PLY import supports the ASCII variant only. Texturing is projection mapping (planar/cylindrical/spherical) from a single photo, not full multi-view photogrammetry.</system:String>
+    <system:String x:Key="Str_AboutTitle">About</system:String>
+
+</ResourceDictionary>

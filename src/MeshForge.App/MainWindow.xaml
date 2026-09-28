@@ -1,0 +1,208 @@
+<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MeshForge.App"
+        xmlns:hx="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        mc:Ignorable="d"
+        Title="{DynamicResource Str_WindowTitle}" Height="820" Width="1400"
+        WindowStartupLocation="CenterScreen"
+        Icon="Assets/icon.ico"
+        Background="{DynamicResource PageBackgroundBrush}"
+        FontFamily="Segoe UI">
+
+    <DockPanel>
+
+        <!-- Pasek marki -->
+        <Border DockPanel.Dock="Top" Background="{StaticResource HeaderGradientBrush}" Height="46">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                <Image Source="Assets/logo.png" Width="24" Height="24"/>
+                <TextBlock Text="MeshForge" Foreground="White" FontWeight="Bold" FontSize="15" Margin="10,0,0,0"/>
+                <TextBlock Text="{DynamicResource Str_BrandSubtitle}" Foreground="#F0CBA8" FontSize="11.5" Margin="10,3,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="{DynamicResource Str_MenuFile}">
+                <MenuItem x:Name="MenuOpen" Header="{DynamicResource Str_MenuOpen}" InputGestureText="Ctrl+O">
+                    <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE838;"/></MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="MenuSaveAs" Header="{DynamicResource Str_MenuSaveAs}" InputGestureText="Ctrl+S">
+                    <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE8D1;"/></MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem x:Name="MenuExit" Header="{DynamicResource Str_MenuExit}"/>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource Str_MenuEdit}">
+                <MenuItem x:Name="MenuUndo" Header="{DynamicResource Str_MenuUndo}" InputGestureText="Ctrl+Z">
+                    <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE751;"/></MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource Str_MenuView}">
+                <MenuItem x:Name="MenuZoomExtents" Header="{DynamicResource Str_MenuZoomExtents}">
+                    <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE93A;"/></MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="MenuToggleWireframe" Header="{DynamicResource Str_MenuToggleWireframe}" IsCheckable="True">
+                    <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE787;"/></MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="MenuPreferences" Header="{DynamicResource Str_MenuPreferences}"/>
+            <MenuItem Header="{DynamicResource Str_MenuHelp}">
+                <MenuItem x:Name="MenuAbout" Header="{DynamicResource Str_MenuAbout}"/>
+            </MenuItem>
+        </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusText" Text="{DynamicResource Str_StatusReady}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="320"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEWY PANEL: operacje na siatce -->
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+
+                    <GroupBox Header="{DynamicResource Str_GroupRepair}">
+                        <StackPanel>
+                            <Button x:Name="BtnFillHoles" Content="{DynamicResource Str_BtnFillHoles}"/>
+                            <Button x:Name="BtnCleanMesh">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource IconGlyph}" Text="&#xE835;"/>
+                                    <TextBlock Text="{DynamicResource Str_BtnCleanMesh}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="BtnRecalcNormals">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource IconGlyph}" Text="&#xE895;"/>
+                                    <TextBlock Text="{DynamicResource Str_BtnRecalcNormals}"/>
+                                </StackPanel>
+                            </Button>
+                            <Separator/>
+                            <TextBlock Text="{DynamicResource Str_SectionSmoothing}" Style="{StaticResource SectionHeaderText}"/>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                                    <Label Content="{DynamicResource Str_LabelIterations}"/>
+                                    <TextBox x:Name="TxtSmoothIterations" Text="3"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                                    <Label Content="{DynamicResource Str_LabelStrength}"/>
+                                    <TextBox x:Name="TxtSmoothFactor" Text="0.5"/>
+                                </StackPanel>
+                            </Grid>
+                            <Button x:Name="BtnSmooth" Content="{DynamicResource Str_BtnSmooth}" HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="{DynamicResource Str_GroupTessellation}">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource Str_SectionSubdivision}" Style="{StaticResource SectionHeaderText}" Margin="0,0,0,4"/>
+                            <Label Content="{DynamicResource Str_LabelSubdivideIterations}"/>
+                            <TextBox x:Name="TxtSubdivideIterations" Text="1"/>
+                            <Button x:Name="BtnSubdivide" Content="{DynamicResource Str_BtnSubdivide}" HorizontalContentAlignment="Center"/>
+                            <Separator/>
+                            <TextBlock Text="{DynamicResource Str_SectionDecimation}" Style="{StaticResource SectionHeaderText}" Margin="0,0,0,4"/>
+                            <Label Content="{DynamicResource Str_LabelDecimateTarget}"/>
+                            <TextBox x:Name="TxtDecimatePercent" Text="50"/>
+                            <Button x:Name="BtnDecimate" Content="{DynamicResource Str_BtnDecimate}" HorizontalContentAlignment="Center"/>
+                            <Separator/>
+                            <TextBlock Text="{DynamicResource Str_SectionPointCloud}" Style="{StaticResource SectionHeaderText}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            <Button x:Name="BtnTriangulatePointCloud" Content="{DynamicResource Str_BtnTriangulatePointCloud}" HorizontalContentAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="{DynamicResource Str_GroupTexture}">
+                        <StackPanel>
+                            <Button x:Name="BtnLoadTexturePhoto">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource IconGlyph}" Text="&#xE8C2;"/>
+                                    <TextBlock Text="{DynamicResource Str_BtnLoadTexturePhoto}"/>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock x:Name="TxtSelectedPhoto" Text="{DynamicResource Str_NoPhotoSelected}" TextWrapping="Wrap"
+                                       FontStyle="Italic" Foreground="{DynamicResource TextSecondaryBrush}" Margin="2,6"/>
+                            <Label Content="{DynamicResource Str_LabelProjectionType}"/>
+                            <!-- Content NIE jest tu ustawiany przez DynamicResource - ComboBox ma znany problem z
+                                 renderowaniem DynamicResource w zamkniętym polu wyboru (patrz PreferencesWindow.xaml).
+                                 Tekst każdej pozycji jest ustawiany z kodu w MainWindow.xaml.vb (RefreshComboBoxItemTexts). -->
+                            <ComboBox x:Name="CmbProjection" SelectedIndex="0">
+                                <ComboBoxItem x:Name="CmbProjectionPlanar"/>
+                                <ComboBoxItem x:Name="CmbProjectionCylindrical"/>
+                                <ComboBoxItem x:Name="CmbProjectionSpherical"/>
+                            </ComboBox>
+                            <Button x:Name="BtnApplyTexture" Style="{StaticResource AccentButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource IconGlyph}" Foreground="White" Text="&#xE790;"/>
+                                    <TextBlock Text="{DynamicResource Str_BtnApplyTexture}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="{DynamicResource Str_GroupTransform}">
+                        <StackPanel>
+                            <Button x:Name="BtnCenter">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource IconGlyph}" Text="&#xE81D;"/>
+                                    <TextBlock Text="{DynamicResource Str_BtnCenter}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="BtnNormalizeSize" Content="{DynamicResource Str_BtnNormalizeSize}"/>
+                            <Button x:Name="BtnFlipNormals" Content="{DynamicResource Str_BtnFlipNormals}"/>
+                            <Button x:Name="BtnAutoOrient" Content="{DynamicResource Str_BtnAutoOrient}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ŚRODEK: podgląd 3D -->
+            <Border Grid.Column="1" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
+                    CornerRadius="10" Margin="8,0" ClipToBounds="True"
+                    Background="{DynamicResource ViewportBackgroundBrush}">
+                <hx:HelixViewport3D x:Name="Viewport" ShowCoordinateSystem="True" ShowViewCube="True"
+                                     ZoomExtentsWhenLoaded="True" Background="Transparent">
+                    <ModelVisual3D>
+                        <ModelVisual3D.Content>
+                            <Model3DGroup>
+                                <AmbientLight Color="#FF404040"/>
+                                <DirectionalLight Color="#FFB0B0B0" Direction="-0.6,-1,-0.4"/>
+                                <DirectionalLight Color="#FF505050" Direction="0.6,0.2,0.8"/>
+                            </Model3DGroup>
+                        </ModelVisual3D.Content>
+                    </ModelVisual3D>
+                    <ModelVisual3D x:Name="MeshVisualHost"/>
+                    <ModelVisual3D x:Name="WireframeVisualHost"/>
+                </hx:HelixViewport3D>
+            </Border>
+
+            <!-- PRAWY PANEL: statystyki i dziennik -->
+            <DockPanel Grid.Column="2">
+                <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Str_SectionStats}" Style="{StaticResource SectionHeaderText}" Margin="4,0,4,4"/>
+                <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
+                        BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Margin="4,0,4,10">
+                    <TextBox x:Name="StatsBox" IsReadOnly="True" TextWrapping="Wrap" Height="128"
+                             BorderThickness="0" Background="Transparent" FontFamily="Consolas" FontSize="12" Padding="8"/>
+                </Border>
+                <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Str_SectionLog}" Style="{StaticResource SectionHeaderText}" Margin="4,0,4,4"/>
+                <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}"
+                        BorderThickness="1" CornerRadius="8" Margin="4,0,4,4">
+                    <TextBox x:Name="LogBox" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0"
+                             Background="Transparent" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="11" Padding="8"/>
+                </Border>
+            </DockPanel>
+
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,111 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--
+        Wszystkie napisy interfejsu - klucze IDENTYCZNE jak w Lang.English.xaml (AppSettings.vb
+        podmienia cały ten słownik na angielski i z powrotem). XAML odwołuje się do nich przez
+        {DynamicResource Str_Xxx}, kod-za-XAML przez Me.FindResource("Str_Xxx") (patrz UiStr w MainWindow.xaml.vb).
+    -->
+    <system:String x:Key="Str_WindowTitle">MeshForge — obróbka skanów 3D</system:String>
+    <system:String x:Key="Str_BrandSubtitle">obróbka skanów 3D</system:String>
+
+    <system:String x:Key="Str_MenuFile">_Plik</system:String>
+    <system:String x:Key="Str_MenuOpen">_Otwórz skan...</system:String>
+    <system:String x:Key="Str_MenuSaveAs">_Zapisz jako...</system:String>
+    <system:String x:Key="Str_MenuExit">Za_kończ</system:String>
+    <system:String x:Key="Str_MenuEdit">_Edycja</system:String>
+    <system:String x:Key="Str_MenuUndo">_Cofnij ostatnią operację</system:String>
+    <system:String x:Key="Str_MenuView">_Widok</system:String>
+    <system:String x:Key="Str_MenuZoomExtents">_Dopasuj widok do modelu</system:String>
+    <system:String x:Key="Str_MenuToggleWireframe">Pokaż _siatkę krawędzi</system:String>
+    <system:String x:Key="Str_MenuPreferences">_Preferencje...</system:String>
+    <system:String x:Key="Str_MenuHelp">Pomo_c</system:String>
+    <system:String x:Key="Str_MenuAbout">_O programie...</system:String>
+
+    <system:String x:Key="Str_StatusReady">Gotowy. Wczytaj skan, żeby zacząć (Plik → Otwórz skan...).</system:String>
+
+    <system:String x:Key="Str_GroupRepair">Naprawa siatki</system:String>
+    <system:String x:Key="Str_GroupTessellation">Teselacja</system:String>
+    <system:String x:Key="Str_GroupTexture">Tekstura kolorowa ze zdjęcia</system:String>
+    <system:String x:Key="Str_GroupTransform">Transformacje</system:String>
+
+    <system:String x:Key="Str_BtnFillHoles">Wypełnij otwory</system:String>
+    <system:String x:Key="Str_BtnCleanMesh">Wyczyść siatkę (spawaj/usuń błędy)</system:String>
+    <system:String x:Key="Str_BtnRecalcNormals">Przelicz normalne</system:String>
+    <system:String x:Key="Str_SectionSmoothing">WYGŁADZANIE (LAPLACE)</system:String>
+    <system:String x:Key="Str_LabelIterations">Iteracje:</system:String>
+    <system:String x:Key="Str_LabelStrength">Siła (0–1):</system:String>
+    <system:String x:Key="Str_BtnSmooth">Wygładź</system:String>
+
+    <system:String x:Key="Str_SectionSubdivision">ZAGĘSZCZANIE (SUBDIVISION)</system:String>
+    <system:String x:Key="Str_LabelSubdivideIterations">Iteracje (×4 trójkątów każda):</system:String>
+    <system:String x:Key="Str_BtnSubdivide">Zagęść siatkę</system:String>
+    <system:String x:Key="Str_SectionDecimation">UPRASZCZANIE (DECYMACJA QEM)</system:String>
+    <system:String x:Key="Str_LabelDecimateTarget">Cel: % obecnych trójkątów:</system:String>
+    <system:String x:Key="Str_BtnDecimate">Uprość siatkę</system:String>
+    <system:String x:Key="Str_SectionPointCloud">CHMURA PUNKTÓW (BEZ TRÓJKĄTÓW)</system:String>
+    <system:String x:Key="Str_BtnTriangulatePointCloud">Teseluj chmurę punktów</system:String>
+
+    <system:String x:Key="Str_BtnLoadTexturePhoto">Wybierz zdjęcie...</system:String>
+    <system:String x:Key="Str_ImageFilter">Obrazy (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp|Wszystkie pliki (*.*)|*.*</system:String>
+    <system:String x:Key="Str_NoPhotoSelected">(brak wybranego zdjęcia)</system:String>
+    <system:String x:Key="Str_LabelProjectionType">Typ rzutowania na model:</system:String>
+    <system:String x:Key="Str_ProjectionPlanar">Planarny (płaski obiekt/przód)</system:String>
+    <system:String x:Key="Str_ProjectionCylindrical">Cylindryczny (kubek, figura)</system:String>
+    <system:String x:Key="Str_ProjectionSpherical">Sferyczny (głowa, kula)</system:String>
+    <system:String x:Key="Str_BtnApplyTexture">Zastosuj teksturę</system:String>
+
+    <system:String x:Key="Str_BtnCenter">Wyśrodkuj</system:String>
+    <system:String x:Key="Str_BtnNormalizeSize">Normalizuj rozmiar (do 1.0)</system:String>
+    <system:String x:Key="Str_BtnFlipNormals">Odwróć normalne</system:String>
+    <system:String x:Key="Str_BtnAutoOrient">Wyprostuj / wybierz podstawę...</system:String>
+
+    <system:String x:Key="Str_SectionStats">STATYSTYKI SIATKI</system:String>
+    <system:String x:Key="Str_NoModelLoaded">(brak wczytanego modelu)</system:String>
+    <system:String x:Key="Str_SectionLog">DZIENNIK OPERACJI</system:String>
+
+    <system:String x:Key="Str_Loading">Ładowanie...</system:String>
+
+    <system:String x:Key="Str_PrefsTitle">Preferencje</system:String>
+    <system:String x:Key="Str_PrefsLanguage">Język:</system:String>
+    <system:String x:Key="Str_PrefsDarkMode">Tryb ciemny</system:String>
+    <system:String x:Key="Str_PrefsClose">Zamknij</system:String>
+    <system:String x:Key="Str_LangPolish">Polski</system:String>
+    <system:String x:Key="Str_LangEnglish">Angielski</system:String>
+
+    <system:String x:Key="Str_PickerTitle">Wybierz powierzchnię podstawy</system:String>
+    <system:String x:Key="Str_PickerInstructions">Wykryto płaskie powierzchnie modelu (liczone tak jak w Orca/PrusaSlicer). Kliknij podświetloną powierzchnię w podglądzie albo wybierz ją z listy, potem zatwierdź.</system:String>
+    <system:String x:Key="Str_PickerApply">Zastosuj</system:String>
+    <system:String x:Key="Str_PickerCancel">Anuluj</system:String>
+    <system:String x:Key="Str_PickerNoSurfaces">Nie znaleziono żadnych płaskich powierzchni w tym modelu.</system:String>
+
+    <system:String x:Key="Str_MsgLoadFirstTitle">Brak wczytanego modelu</system:String>
+    <system:String x:Key="Str_MsgLoadFirst">Najpierw wczytaj skan (Plik → Otwórz skan...).</system:String>
+    <system:String x:Key="Str_MsgNoPhotoTitle">Brak zdjęcia</system:String>
+    <system:String x:Key="Str_MsgNoPhoto">Najpierw wybierz zdjęcie przyciskiem 'Wybierz zdjęcie...'.</system:String>
+    <system:String x:Key="Str_MsgOpenErrorTitle">Błąd wczytywania</system:String>
+    <system:String x:Key="Str_MsgOpenError">Nie udało się wczytać pliku:</system:String>
+    <system:String x:Key="Str_MsgSaveErrorTitle">Błąd zapisu</system:String>
+    <system:String x:Key="Str_MsgSaveError">Nie udało się zapisać pliku:</system:String>
+    <system:String x:Key="Str_MsgSubdivideConfirmTitle">Potwierdzenie</system:String>
+    <system:String x:Key="Str_MsgSubdivideConfirm">iteracji zagęszczania da ok. ×{0:N0} więcej trójkątów niż teraz. Może to być bardzo wolne i zająć dużo pamięci dla dużych siatek. Kontynuować?</system:String>
+    <system:String x:Key="Str_LogUndoNone">Brak operacji do cofnięcia.</system:String>
+    <system:String x:Key="Str_LogUndoDone">Cofnięto ostatnią operację.</system:String>
+    <system:String x:Key="Str_LogLoaded">Wczytano</system:String>
+    <system:String x:Key="Str_LogSaved">Zapisano jako</system:String>
+    <system:String x:Key="Str_LogSavedTo">Zapisano:</system:String>
+    <system:String x:Key="Str_LogVertices">wierzchołków</system:String>
+    <system:String x:Key="Str_LogTriangles">trójkątów</system:String>
+    <system:String x:Key="Str_LogTexture">tekstura</system:String>
+    <system:String x:Key="Str_LogVertexColor">kolor wierzchołków</system:String>
+
+    <system:String x:Key="Str_AboutText">MeshForge — narzędzie do obróbki skanów 3D.
+
+Funkcje: wypełnianie otworów, teselacja (zagęszczanie i decymacja QEM), teksturowanie kolorowe ze zdjęcia, czyszczenie siatki, wygładzanie Laplace'a, auto-orientacja do najbardziej płaskiej powierzchni, podstawowe transformacje.
+
+Formaty: import OBJ / STL / PLY (ASCII) / XYZ, eksport OBJ / STL / PLY / XYZ.
+
+Ograniczenia wersji 1: teselacja chmury punktów (bez trójkątów) działa metodą rzutu 2,5D — dobrze radzi sobie z pojedynczym ujęciem skanera, nie z pełną rekonstrukcją 360°. Import PLY obsługuje tylko wariant ASCII. Teksturowanie to mapowanie przez rzut (planarny/cylindryczny/sferyczny) z jednego zdjęcia, nie pełna fotogrametria wieloujęciowa.</system:String>
+    <system:String x:Key="Str_AboutTitle">O programie</system:String>
+
+</ResourceDictionary>

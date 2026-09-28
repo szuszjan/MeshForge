@@ -1,0 +1,23 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Paleta ciemna - w tonacji kuźni, te same klucze co Palette.Light.xaml, patrz komentarz tam. -->
+    <SolidColorBrush x:Key="HeaderTextAccentBrush" Color="#F5A15A"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#F2811A"/>
+    <SolidColorBrush x:Key="AccentLightBrush" Color="#4A2E14"/>
+    <SolidColorBrush x:Key="AccentPaleBrush" Color="#3A2717"/>
+    <SolidColorBrush x:Key="PageBackgroundBrush" Color="#1C1712"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#26201A"/>
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#2E251D"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#40342A"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F0E9E0"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#B0A08D"/>
+    <SolidColorBrush x:Key="DividerBrush" Color="#3A2F26"/>
+    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#2A231C"/>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#6B5D4E"/>
+    <Color x:Key="CardShadowColor">#000000</Color>
+
+    <LinearGradientBrush x:Key="ViewportBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#2E2721" Offset="0"/>
+        <GradientStop Color="#201A15" Offset="1"/>
+    </LinearGradientBrush>
+</ResourceDictionary>

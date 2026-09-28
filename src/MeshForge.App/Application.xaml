@@ -1,0 +1,19 @@
+﻿<Application x:Class="Application"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MeshForge.App">
+    <!-- Brak StartupUri celowo: Application.xaml.vb najpierw pokazuje ekran startowy (SplashWindow),
+         a dopiero potem tworzy i pokazuje MainWindow. -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Kolejność jest ISTOTNA i ZASZYTA na sztywno w AppSettings.vb (indeksy 0 i 1):
+                     [0] paleta kolorów jasny/ciemny, [1] słownik tekstów PL/EN, [2] style (Theme.xaml,
+                     nigdy nie podmieniany w locie - zawsze wpisuje się przez DynamicResource do [0]/[1]). -->
+                <ResourceDictionary Source="Styles/Palette.Light.xaml"/>
+                <ResourceDictionary Source="Styles/Lang.Polish.xaml"/>
+                <ResourceDictionary Source="Styles/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

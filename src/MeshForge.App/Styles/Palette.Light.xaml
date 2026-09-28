@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        Paleta jasna - w tonacji kuźni (spójna z ikoną/gradientem marki: węgiel -> żar). Klucze muszą
+        być IDENTYCZNE jak w Palette.Dark.xaml - w Application.xaml.vb w czasie działania programu
+        podmieniany jest CAŁY ten słownik na Palette.Dark.xaml (albo z powrotem), a style w Theme.xaml
+        czytają te klucze przez DynamicResource, więc się odświeżą.
+    -->
+    <SolidColorBrush x:Key="HeaderTextAccentBrush" Color="#8A3A0F"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#D9601A"/>
+    <SolidColorBrush x:Key="AccentLightBrush" Color="#F4D3B0"/>
+    <SolidColorBrush x:Key="AccentPaleBrush" Color="#FDF2E6"/>
+    <SolidColorBrush x:Key="PageBackgroundBrush" Color="#F6F4F1"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#E8E1D8"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#2B2119"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#7A6F63"/>
+    <SolidColorBrush x:Key="DividerBrush" Color="#ECE6DE"/>
+    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#F1EDE7"/>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#B3A99C"/>
+    <Color x:Key="CardShadowColor">#2B2119</Color>
+
+    <LinearGradientBrush x:Key="ViewportBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#F1ECE4" Offset="0"/>
+        <GradientStop Color="#E5DCCE" Offset="1"/>
+    </LinearGradientBrush>
+</ResourceDictionary>
