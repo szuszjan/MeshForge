@@ -56,12 +56,20 @@ Namespace Geometry
         End Function
 
         Public Overrides Function ToString() As String
+            Return ToString("")
+        End Function
+
+        ''' <summary>Jak ToString(), ale z opcjonalnym sufiksem jednostki (np. "mm") doklejonym do wymiarów/pola/objętości - czysto kosmetyczne, Core nie wie nic o "preferencjach", to tylko string od wywołującego.</summary>
+        Public Overloads Function ToString(unitSuffix As String) As String
             Dim yes = Loc.Translated("tak", "yes")
             Dim no = Loc.Translated("nie", "no")
+            Dim lenU = unitSuffix
+            Dim areaU = If(String.IsNullOrEmpty(unitSuffix), "", unitSuffix & "²")
+            Dim volU = If(String.IsNullOrEmpty(unitSuffix), "", unitSuffix & "³")
             Dim sb As New Text.StringBuilder()
             sb.AppendLine(Loc.Translated($"Wierzchołki: {VertexCount:N0}    Trójkąty: {TriangleCount:N0}", $"Vertices: {VertexCount:N0}    Triangles: {TriangleCount:N0}"))
-            sb.AppendLine(Loc.Translated($"Wymiary (SxWxG): {Size.X:F2} x {Size.Y:F2} x {Size.Z:F2}", $"Size (WxHxD): {Size.X:F2} x {Size.Y:F2} x {Size.Z:F2}"))
-            sb.AppendLine(Loc.Translated($"Pole powierzchni: {SurfaceArea:F3}    Objętość (przybliżona): {Volume:F3}", $"Surface area: {SurfaceArea:F3}    Volume (approx.): {Volume:F3}"))
+            sb.AppendLine(Loc.Translated($"Wymiary (SxWxG): {Size.X:F2} x {Size.Y:F2} x {Size.Z:F2} {lenU}", $"Size (WxHxD): {Size.X:F2} x {Size.Y:F2} x {Size.Z:F2} {lenU}"))
+            sb.AppendLine(Loc.Translated($"Pole powierzchni: {SurfaceArea:F3} {areaU}    Objętość (przybliżona): {Volume:F3} {volU}", $"Surface area: {SurfaceArea:F3} {areaU}    Volume (approx.): {Volume:F3} {volU}"))
             sb.AppendLine(Loc.Translated($"Wodoszczelna: {If(IsWatertight, yes, $"{no} ({OpenBoundaryEdgeCount} krawędzi brzegowych)")}",
                                  $"Watertight: {If(IsWatertight, yes, $"{no} ({OpenBoundaryEdgeCount} boundary edges)")}"))
             sb.AppendLine(Loc.Translated($"Kolor wierzchołków: {If(HasVertexColors, yes, no)}    Tekstura: {If(HasTexture, yes, no)}",

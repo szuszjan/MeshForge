@@ -15,6 +15,7 @@
     <system:String x:Key="Str_MenuExit">Za_kończ</system:String>
     <system:String x:Key="Str_MenuEdit">_Edycja</system:String>
     <system:String x:Key="Str_MenuUndo">_Cofnij ostatnią operację</system:String>
+    <system:String x:Key="Str_MenuRedo">_Ponów</system:String>
     <system:String x:Key="Str_MenuView">_Widok</system:String>
     <system:String x:Key="Str_MenuZoomExtents">_Dopasuj widok do modelu</system:String>
     <system:String x:Key="Str_MenuToggleWireframe">Pokaż _siatkę krawędzi</system:String>
@@ -59,16 +60,35 @@
     <system:String x:Key="Str_BtnNormalizeSize">Normalizuj rozmiar (do 1.0)</system:String>
     <system:String x:Key="Str_BtnFlipNormals">Odwróć normalne</system:String>
     <system:String x:Key="Str_BtnAutoOrient">Wyprostuj / wybierz podstawę...</system:String>
+    <system:String x:Key="Str_BtnMergeModel">Połącz z innym modelem...</system:String>
+
+    <system:String x:Key="Str_ToolRotate">Obróć</system:String>
+    <system:String x:Key="Str_ToolLasso">Usuń lassem</system:String>
+    <system:String x:Key="Str_ToolExtrude">Wysunięcie</system:String>
+    <system:String x:Key="Str_ToolLassoHint">Zaznacz przeciągając po modelu, potem usuń.</system:String>
+    <system:String x:Key="Str_ToolLassoDeleteBtn">Usuń zaznaczone</system:String>
+    <system:String x:Key="Str_ToolLassoClearBtn">Wyczyść zaznaczenie</system:String>
+    <system:String x:Key="Str_ToolExtrudeDistance">Odległość:</system:String>
+    <system:String x:Key="Str_ToolExtrudeHint">Kliknij trójkąt na modelu, żeby go wysunąć.</system:String>
+    <system:String x:Key="Str_LogLassoSelectedPrefix">Zaznaczono</system:String>
+    <system:String x:Key="Str_LogLassoNone">Brak trójkątów w obszarze lassa.</system:String>
 
     <system:String x:Key="Str_SectionStats">STATYSTYKI SIATKI</system:String>
     <system:String x:Key="Str_NoModelLoaded">(brak wczytanego modelu)</system:String>
     <system:String x:Key="Str_SectionLog">DZIENNIK OPERACJI</system:String>
+    <system:String x:Key="Str_SectionHistory">HISTORIA</system:String>
+    <system:String x:Key="Str_HistoryBase">Baza</system:String>
 
     <system:String x:Key="Str_Loading">Ładowanie...</system:String>
 
     <system:String x:Key="Str_PrefsTitle">Preferencje</system:String>
     <system:String x:Key="Str_PrefsLanguage">Język:</system:String>
     <system:String x:Key="Str_PrefsDarkMode">Tryb ciemny</system:String>
+    <system:String x:Key="Str_PrefsAutoRecalc">Automatycznie przelicz normalne po operacjach, które je unieważniają</system:String>
+    <system:String x:Key="Str_PrefsUnits">Jednostka (tylko etykieta na statystykach):</system:String>
+    <system:String x:Key="Str_PrefsUnitsNone">Brak</system:String>
+    <system:String x:Key="Str_PrefsUnitsInch">cal</system:String>
+    <system:String x:Key="Str_PrefsHistoryDepth">Głębokość historii (liczba kroków):</system:String>
     <system:String x:Key="Str_PrefsClose">Zamknij</system:String>
     <system:String x:Key="Str_LangPolish">Polski</system:String>
     <system:String x:Key="Str_LangEnglish">Angielski</system:String>
@@ -91,6 +111,8 @@
     <system:String x:Key="Str_MsgSubdivideConfirm">iteracji zagęszczania da ok. ×{0:N0} więcej trójkątów niż teraz. Może to być bardzo wolne i zająć dużo pamięci dla dużych siatek. Kontynuować?</system:String>
     <system:String x:Key="Str_LogUndoNone">Brak operacji do cofnięcia.</system:String>
     <system:String x:Key="Str_LogUndoDone">Cofnięto ostatnią operację.</system:String>
+    <system:String x:Key="Str_LogRedoNone">Brak operacji do ponowienia.</system:String>
+    <system:String x:Key="Str_LogHistoryJump">Przeskoczono do wybranego kroku historii.</system:String>
     <system:String x:Key="Str_LogLoaded">Wczytano</system:String>
     <system:String x:Key="Str_LogSaved">Zapisano jako</system:String>
     <system:String x:Key="Str_LogSavedTo">Zapisano:</system:String>

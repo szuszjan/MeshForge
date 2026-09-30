@@ -12,6 +12,7 @@
     <system:String x:Key="Str_MenuExit">E_xit</system:String>
     <system:String x:Key="Str_MenuEdit">_Edit</system:String>
     <system:String x:Key="Str_MenuUndo">_Undo last operation</system:String>
+    <system:String x:Key="Str_MenuRedo">_Redo</system:String>
     <system:String x:Key="Str_MenuView">_View</system:String>
     <system:String x:Key="Str_MenuZoomExtents">_Zoom to fit model</system:String>
     <system:String x:Key="Str_MenuToggleWireframe">Show _wireframe</system:String>
@@ -56,16 +57,35 @@
     <system:String x:Key="Str_BtnNormalizeSize">Normalize size (to 1.0)</system:String>
     <system:String x:Key="Str_BtnFlipNormals">Flip normals</system:String>
     <system:String x:Key="Str_BtnAutoOrient">Straighten / pick base...</system:String>
+    <system:String x:Key="Str_BtnMergeModel">Merge with another model...</system:String>
+
+    <system:String x:Key="Str_ToolRotate">Rotate</system:String>
+    <system:String x:Key="Str_ToolLasso">Lasso delete</system:String>
+    <system:String x:Key="Str_ToolExtrude">Extrude</system:String>
+    <system:String x:Key="Str_ToolLassoHint">Drag on the model to select triangles, then delete.</system:String>
+    <system:String x:Key="Str_ToolLassoDeleteBtn">Delete selected</system:String>
+    <system:String x:Key="Str_ToolLassoClearBtn">Clear selection</system:String>
+    <system:String x:Key="Str_ToolExtrudeDistance">Distance:</system:String>
+    <system:String x:Key="Str_ToolExtrudeHint">Click a triangle on the model to extrude it.</system:String>
+    <system:String x:Key="Str_LogLassoSelectedPrefix">Selected</system:String>
+    <system:String x:Key="Str_LogLassoNone">No triangles in the lasso.</system:String>
 
     <system:String x:Key="Str_SectionStats">MESH STATISTICS</system:String>
     <system:String x:Key="Str_NoModelLoaded">(no model loaded)</system:String>
     <system:String x:Key="Str_SectionLog">OPERATION LOG</system:String>
+    <system:String x:Key="Str_SectionHistory">HISTORY</system:String>
+    <system:String x:Key="Str_HistoryBase">Base</system:String>
 
     <system:String x:Key="Str_Loading">Loading...</system:String>
 
     <system:String x:Key="Str_PrefsTitle">Preferences</system:String>
     <system:String x:Key="Str_PrefsLanguage">Language:</system:String>
     <system:String x:Key="Str_PrefsDarkMode">Dark mode</system:String>
+    <system:String x:Key="Str_PrefsAutoRecalc">Automatically recalculate normals after operations that invalidate them</system:String>
+    <system:String x:Key="Str_PrefsUnits">Unit (display label only):</system:String>
+    <system:String x:Key="Str_PrefsUnitsNone">None</system:String>
+    <system:String x:Key="Str_PrefsUnitsInch">inch</system:String>
+    <system:String x:Key="Str_PrefsHistoryDepth">History depth (number of steps):</system:String>
     <system:String x:Key="Str_PrefsClose">Close</system:String>
     <system:String x:Key="Str_LangPolish">Polish</system:String>
     <system:String x:Key="Str_LangEnglish">English</system:String>
@@ -88,6 +108,8 @@
     <system:String x:Key="Str_MsgSubdivideConfirm">subdivision iterations will produce about ×{0:N0} more triangles than now. This can be very slow and memory-heavy for large meshes. Continue?</system:String>
     <system:String x:Key="Str_LogUndoNone">Nothing to undo.</system:String>
     <system:String x:Key="Str_LogUndoDone">Undid the last operation.</system:String>
+    <system:String x:Key="Str_LogRedoNone">Nothing to redo.</system:String>
+    <system:String x:Key="Str_LogHistoryJump">Jumped to the selected history step.</system:String>
     <system:String x:Key="Str_LogLoaded">Loaded</system:String>
     <system:String x:Key="Str_LogSaved">Saved as</system:String>
     <system:String x:Key="Str_LogSavedTo">Saved:</system:String>

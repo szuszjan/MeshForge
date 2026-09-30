@@ -374,4 +374,72 @@ Public Class AlgorithmTests
         Assert.Equal(1.0F, largest, 3)
     End Sub
 
+    <Fact>
+    Public Sub MeshTransformer_RotateObracaWierzcholkiWokolOsiZ()
+        Dim cube = MakeCube() ' wyśrodkowany na (0,0,0), więc obrót wokół bbox-center = obrót wokół początku układu
+        Dim before = cube.Vertices(1) ' (1,-1,-1)
+
+        Dim result = MeshTransformer.Rotate(cube, New Vector3(0, 0, 1), 90.0F)
+
+        Assert.True(result.Success, result.ToString())
+        ' obrót +90° wokół Z: (x,y,z) -> (-y,x,z), czyli (1,-1,-1) -> (1,1,-1) - dokładnie pozycja oryginalnego wierzchołka 2
+        Dim after = cube.Vertices(1)
+        Assert.Equal(1.0F, after.X, 3)
+        Assert.Equal(1.0F, after.Y, 3)
+        Assert.Equal(-1.0F, after.Z, 3)
+    End Sub
+
+    <Fact>
+    Public Sub MeshTransformer_DeleteTrianglesUsuwaTrojkatyIOsieroconeWierzcholki()
+        Dim cube = MakeCube() ' 8 wierzchołków, 12 trójkątów
+
+        ' usuń WSZYSTKIE trójkąty - każdy wierzchołek powinien stać się osierocony i zniknąć
+        Dim result = MeshTransformer.DeleteTriangles(cube, Enumerable.Range(0, cube.TriangleCount))
+
+        Assert.True(result.Success, result.ToString())
+        Assert.Equal(0, cube.TriangleCount)
+        Assert.Equal(0, cube.VertexCount)
+    End Sub
+
+    <Fact>
+    Public Sub MeshTransformer_DeleteTrianglesZachowujeWspoldzieloneWierzcholki()
+        Dim cube = MakeCube()
+
+        ' usuń tylko dolną ścianę (trójkąty 0 i 1) - jej wierzchołki {0,1,2,3} są współdzielone ze ścianami bocznymi i NIE powinny zniknąć
+        Dim result = MeshTransformer.DeleteTriangles(cube, {0, 1})
+
+        Assert.True(result.Success, result.ToString())
+        Assert.Equal(10, cube.TriangleCount)
+        Assert.Equal(8, cube.VertexCount)
+        For Each t In cube.Triangles
+            Assert.True(t.A < cube.VertexCount AndAlso t.B < cube.VertexCount AndAlso t.C < cube.VertexCount)
+        Next
+    End Sub
+
+    <Fact>
+    Public Sub MeshTransformer_ExtrudeTriangleDodajeScianyBoczneIWysuwaDaszek()
+        Dim cube = MakeCube()
+        Dim triangleIndex = 4 ' (0,1,5) - jedna ze ścian bocznych
+        Dim original = cube.Triangles(triangleIndex)
+        Dim p0 = cube.Vertices(original.A)
+        Dim p1 = cube.Vertices(original.B)
+        Dim p2 = cube.Vertices(original.C)
+        Dim expectedNormal = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0))
+
+        Dim result = MeshTransformer.ExtrudeTriangle(cube, triangleIndex, 0.5F)
+
+        Assert.True(result.Success, result.ToString())
+        Assert.Equal(12 + 6, cube.TriangleCount) ' oryginał przemianowany na daszek + 6 nowych ścian bocznych
+        Assert.Equal(8 + 6, cube.VertexCount) ' 3 duplikaty podstawy + 3 duplikaty daszka
+
+        Dim cap = cube.Triangles(triangleIndex) ' ten sam slot - teraz to podniesiony daszek
+        Dim capCentroid = (cube.Vertices(cap.A) + cube.Vertices(cap.B) + cube.Vertices(cap.C)) / 3.0F
+        Dim originalCentroid = (p0 + p1 + p2) / 3.0F
+        Dim actualOffset = capCentroid - originalCentroid
+        Assert.Equal(0.5F, actualOffset.Length(), 3)
+        Assert.Equal(expectedNormal.X, Vector3.Normalize(actualOffset).X, 3)
+        Assert.Equal(expectedNormal.Y, Vector3.Normalize(actualOffset).Y, 3)
+        Assert.Equal(expectedNormal.Z, Vector3.Normalize(actualOffset).Z, 3)
+    End Sub
+
 End Class

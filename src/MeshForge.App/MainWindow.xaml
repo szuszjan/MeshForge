@@ -10,7 +10,8 @@
         WindowStartupLocation="CenterScreen"
         Icon="Assets/icon.ico"
         Background="{DynamicResource PageBackgroundBrush}"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <DockPanel>
 
@@ -38,6 +39,9 @@
                 <MenuItem x:Name="MenuUndo" Header="{DynamicResource Str_MenuUndo}" InputGestureText="Ctrl+Z">
                     <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE751;"/></MenuItem.Icon>
                 </MenuItem>
+                <MenuItem x:Name="MenuRedo" Header="{DynamicResource Str_MenuRedo}" InputGestureText="Ctrl+Y">
+                    <MenuItem.Icon><TextBlock Style="{StaticResource IconGlyph}" Margin="0" Text="&#xE7A6;"/></MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="{DynamicResource Str_MenuView}">
                 <MenuItem x:Name="MenuZoomExtents" Header="{DynamicResource Str_MenuZoomExtents}">
@@ -52,6 +56,43 @@
                 <MenuItem x:Name="MenuAbout" Header="{DynamicResource Str_MenuAbout}"/>
             </MenuItem>
         </Menu>
+
+        <!-- Pasek narzędzi: proste narzędzia edycji siatki działające bezpośrednio w podglądzie 3D -->
+        <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1" Padding="8,6">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="ToolBtnRotate" Content="{DynamicResource Str_ToolRotate}" Padding="10,6" Margin="0,0,4,0"/>
+                <Button x:Name="ToolBtnLasso" Content="{DynamicResource Str_ToolLasso}" Padding="10,6" Margin="0,0,4,0"/>
+                <Button x:Name="ToolBtnExtrude" Content="{DynamicResource Str_ToolExtrude}" Padding="10,6" Margin="0,0,10,0"/>
+                <Rectangle Width="1" Fill="{DynamicResource DividerBrush}" Margin="0,2"/>
+
+                <StackPanel x:Name="RotateOptionsPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="12,0,0,0">
+                    <TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <Button x:Name="BtnRotateXMinus90" Content="−90°" Padding="8,6" Margin="0,0,2,0"/>
+                    <Button x:Name="BtnRotateXPlus90" Content="+90°" Padding="8,6" Margin="0,0,10,0"/>
+                    <TextBlock Text="Y:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <Button x:Name="BtnRotateYMinus90" Content="−90°" Padding="8,6" Margin="0,0,2,0"/>
+                    <Button x:Name="BtnRotateYPlus90" Content="+90°" Padding="8,6" Margin="0,0,10,0"/>
+                    <TextBlock Text="Z:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <Button x:Name="BtnRotateZMinus90" Content="−90°" Padding="8,6" Margin="0,0,2,0"/>
+                    <Button x:Name="BtnRotateZPlus90" Content="+90°" Padding="8,6"/>
+                </StackPanel>
+
+                <StackPanel x:Name="LassoOptionsPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="12,0,0,0">
+                    <TextBlock Text="{DynamicResource Str_ToolLassoHint}" VerticalAlignment="Center" Margin="0,0,10,0"
+                               FontStyle="Italic" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <Button x:Name="BtnLassoDeleteSelected" Content="{DynamicResource Str_ToolLassoDeleteBtn}" Padding="8,6" Margin="0,0,4,0" IsEnabled="False"/>
+                    <Button x:Name="BtnLassoClearSelection" Content="{DynamicResource Str_ToolLassoClearBtn}" Padding="8,6" IsEnabled="False"/>
+                </StackPanel>
+
+                <StackPanel x:Name="ExtrudeOptionsPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="12,0,0,0">
+                    <TextBlock Text="{DynamicResource Str_ToolExtrudeDistance}" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox x:Name="TxtExtrudeDistance" Width="55" Text="1.0" Margin="0,0,10,0"/>
+                    <TextBlock Text="{DynamicResource Str_ToolExtrudeHint}" VerticalAlignment="Center"
+                               FontStyle="Italic" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
 
         <StatusBar DockPanel.Dock="Bottom" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0">
             <StatusBarItem>
@@ -161,31 +202,56 @@
                             <Button x:Name="BtnNormalizeSize" Content="{DynamicResource Str_BtnNormalizeSize}"/>
                             <Button x:Name="BtnFlipNormals" Content="{DynamicResource Str_BtnFlipNormals}"/>
                             <Button x:Name="BtnAutoOrient" Content="{DynamicResource Str_BtnAutoOrient}"/>
+                            <Button x:Name="BtnMergeModel" Content="{DynamicResource Str_BtnMergeModel}"/>
                         </StackPanel>
                     </GroupBox>
 
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- ŚRODEK: podgląd 3D -->
-            <Border Grid.Column="1" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
-                    CornerRadius="10" Margin="8,0" ClipToBounds="True"
-                    Background="{DynamicResource ViewportBackgroundBrush}">
-                <hx:HelixViewport3D x:Name="Viewport" ShowCoordinateSystem="True" ShowViewCube="True"
-                                     ZoomExtentsWhenLoaded="True" Background="Transparent">
-                    <ModelVisual3D>
-                        <ModelVisual3D.Content>
-                            <Model3DGroup>
-                                <AmbientLight Color="#FF404040"/>
-                                <DirectionalLight Color="#FFB0B0B0" Direction="-0.6,-1,-0.4"/>
-                                <DirectionalLight Color="#FF505050" Direction="0.6,0.2,0.8"/>
-                            </Model3DGroup>
-                        </ModelVisual3D.Content>
-                    </ModelVisual3D>
-                    <ModelVisual3D x:Name="MeshVisualHost"/>
-                    <ModelVisual3D x:Name="WireframeVisualHost"/>
-                </hx:HelixViewport3D>
-            </Border>
+            <!-- ŚRODEK: podgląd 3D + pasek historii -->
+            <DockPanel Grid.Column="1" Margin="8,0">
+                <Border DockPanel.Dock="Bottom" Height="70" Margin="0,8,0,0" BorderBrush="{DynamicResource CardBorderBrush}"
+                        BorderThickness="1" CornerRadius="10" Background="{DynamicResource CardBackgroundBrush}">
+                    <DockPanel Margin="10,6">
+                        <TextBlock DockPanel.Dock="Left" Text="{DynamicResource Str_SectionHistory}" Style="{StaticResource SectionHeaderText}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <StackPanel x:Name="HistoryBar" Orientation="Horizontal" VerticalAlignment="Center"/>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
+                <Grid>
+                    <Border BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
+                            CornerRadius="10" ClipToBounds="True"
+                            Background="{DynamicResource ViewportBackgroundBrush}">
+                        <hx:HelixViewport3D x:Name="Viewport" ShowCoordinateSystem="True" ShowViewCube="True"
+                                             ZoomExtentsWhenLoaded="True" Background="Transparent">
+                            <ModelVisual3D>
+                                <ModelVisual3D.Content>
+                                    <Model3DGroup>
+                                        <AmbientLight Color="#FF404040"/>
+                                        <DirectionalLight Color="#FFB0B0B0" Direction="-0.6,-1,-0.4"/>
+                                        <DirectionalLight Color="#FF505050" Direction="0.6,0.2,0.8"/>
+                                    </Model3DGroup>
+                                </ModelVisual3D.Content>
+                            </ModelVisual3D>
+                            <ModelVisual3D x:Name="MeshVisualHost"/>
+                            <ModelVisual3D x:Name="WireframeVisualHost"/>
+                            <ModelVisual3D x:Name="SelectionVisualHost"/>
+                        </hx:HelixViewport3D>
+                    </Border>
+                    <!-- Nakładka 2D na podglądzie 3D - do rysowania lassa i przechwytywania kliknięć narzędzi
+                         (Wysunięcie/Lasso). IsHitTestVisible przełączane z kodu: gdy aktywne narzędzie tego
+                         nie potrzebuje, zdarzenia myszy przechodzą "przez" nią normalnie do kamery Viewportu. -->
+                    <Canvas x:Name="ToolOverlayCanvas" Background="Transparent" IsHitTestVisible="False"
+                            MouseLeftButtonDown="ToolOverlayCanvas_MouseLeftButtonDown"
+                            MouseMove="ToolOverlayCanvas_MouseMove"
+                            MouseLeftButtonUp="ToolOverlayCanvas_MouseLeftButtonUp"
+                            MouseWheel="ToolOverlayCanvas_MouseWheel">
+                        <Polyline x:Name="LassoPolyline" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" StrokeDashArray="4,2"/>
+                    </Canvas>
+                </Grid>
+            </DockPanel>
 
             <!-- PRAWY PANEL: statystyki i dziennik -->
             <DockPanel Grid.Column="2">

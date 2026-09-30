@@ -1,7 +1,7 @@
 <Window x:Class="PreferencesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="{DynamicResource Str_PrefsTitle}" Height="240" Width="360"
+        Title="{DynamicResource Str_PrefsTitle}" Height="520" Width="380"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         ShowInTaskbar="False"
         Background="{DynamicResource PageBackgroundBrush}"
@@ -17,9 +17,26 @@
         </ComboBox>
 
         <CheckBox x:Name="ChkDarkMode" Content="{DynamicResource Str_PrefsDarkMode}"
-                  Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,24,0,0"/>
+                  Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,20,0,0"/>
+
+        <Separator Margin="0,20,0,16"/>
+
+        <CheckBox x:Name="ChkAutoRecalcNormals" Content="{DynamicResource Str_PrefsAutoRecalc}"
+                  Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+        <Label Content="{DynamicResource Str_PrefsUnits}" Padding="0,20,0,4"/>
+        <!-- Content pozycji ustawiany z kodu (ten sam powód co CmbLanguage wyżej) -->
+        <ComboBox x:Name="CmbUnits">
+            <ComboBoxItem x:Name="CmbUnitsNone"/>
+            <ComboBoxItem x:Name="CmbUnitsMm"/>
+            <ComboBoxItem x:Name="CmbUnitsCm"/>
+            <ComboBoxItem x:Name="CmbUnitsIn"/>
+        </ComboBox>
+
+        <Label Content="{DynamicResource Str_PrefsHistoryDepth}" Padding="0,20,0,4"/>
+        <TextBox x:Name="TxtHistoryDepth"/>
 
         <Button x:Name="BtnClose" Content="{DynamicResource Str_PrefsClose}"
-                HorizontalAlignment="Right" Width="110" Margin="0,32,0,0"/>
+                HorizontalAlignment="Right" Width="110" Margin="0,28,0,0"/>
     </StackPanel>
 </Window>

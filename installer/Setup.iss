@@ -3,7 +3,7 @@
 ; Wymaga wcześniejszego "dotnet publish" - patrz komendę w installer/build.ps1.
 
 #define MyAppName "MeshForge"
-#define MyAppVersion "1.1.1"
+#define MyAppVersion "1.2.0"
 #define MyAppExeName "MeshForge.App.exe"
 #define MyPublishDir "..\publish\win-x64"
 
