@@ -68,6 +68,10 @@
     from { opacity: 0; transform: translateY(22px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes emberRise {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% - 46px)) scale(0.2); }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -85,6 +89,16 @@
     padding: 90px 0 70px;
     text-align: center;
     overflow: hidden;
+    position: relative;
+  }
+  /* Cursor-trailing spark, spawned by JS on mousemove - a little forge-ember trail. */
+  .ember {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, #fff6e0 0%, #ffb347 40%, #e8590c 75%, transparent 100%);
+    box-shadow: 0 0 6px 1px rgba(255, 150, 50, 0.8);
+    animation: emberRise 0.9s ease-out forwards;
   }
   header.hero img.logo {
     width: 108px; height: 108px; margin: 0 auto 28px; border-radius: 24px;
@@ -145,11 +159,19 @@
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
   }
   .card {
+    position: relative; overflow: hidden;
     background: var(--card); border: 1px solid var(--card-border); border-radius: 12px;
     padding: 24px;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
   .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 16px 32px rgba(0,0,0,0.3); }
+  /* Warm spotlight that tracks the cursor within the card (JS sets --mx/--my on mousemove); paired with a JS-driven 3D tilt on the card's own transform. */
+  .card::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(232, 89, 12, 0.22), transparent 60%);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .card:hover::before { opacity: 1; }
   /* higher specificity than either .reveal or .card alone, so entrance (opacity/translateY-up) and hover (lift/border/shadow) both animate correctly on the same element */
   .card.reveal { transition: opacity 0.6s ease, transform 0.3s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
   .grid .card:nth-child(3n+1) { transition-delay: 0s; }
@@ -386,6 +408,56 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
   targets.forEach(el => observer.observe(el));
+})();
+
+// Cursor-reactive effects, skipped for touch/coarse pointers and for prefers-reduced-motion.
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  if (reduceMotion || !finePointer) return;
+
+  // Ember trail in the hero: spawns a little spark at the cursor every ~60ms of movement, matching the sparks in the logo.
+  const hero = document.querySelector('header.hero');
+  if (hero) {
+    let lastSpark = 0;
+    hero.addEventListener('mousemove', (e) => {
+      const now = performance.now();
+      if (now - lastSpark < 60) return;
+      lastSpark = now;
+
+      const rect = hero.getBoundingClientRect();
+      const spark = document.createElement('span');
+      spark.className = 'ember';
+      const size = 3 + Math.random() * 4;
+      spark.style.width = size + 'px';
+      spark.style.height = size + 'px';
+      spark.style.left = (e.clientX - rect.left) + 'px';
+      spark.style.top = (e.clientY - rect.top) + 'px';
+      spark.style.setProperty('--dx', Math.round((Math.random() - 0.5) * 50) + 'px');
+      hero.appendChild(spark);
+      setTimeout(() => spark.remove(), 900);
+    });
+  }
+
+  // 3D tilt + spotlight on feature cards: transform is set inline (transition disabled) while tracking
+  // so it feels immediate, then eased back to neutral on mouseleave.
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      const rotateX = (0.5 - y) * 12;
+      const rotateY = (x - 0.5) * 12;
+      card.style.transition = 'border-color 0.25s ease, box-shadow 0.25s ease';
+      card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+      card.style.setProperty('--mx', (x * 100) + '%');
+      card.style.setProperty('--my', (y * 100) + '%');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.4s ease, border-color 0.25s ease, box-shadow 0.25s ease';
+      card.style.transform = '';
+    });
+  });
 })();
 
 (async () => {
